@@ -66,10 +66,10 @@ COOKIES_ENABLED = False
 # Configure item pipelines
 # See https://doc.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
-   'zhihuuser.pipelines.MongoPipeline': 300,
+   'zhihuuser.pipelines.ExamplePipeline': 1,
 
     # Store scraped item in redis for post-processing.
-    'scrapy_redis.pipelines.RedisPipeline': 301
+    # 'scrapy_redis.pipelines.RedisPipeline': 301
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)
@@ -93,10 +93,20 @@ ITEM_PIPELINES = {
 #HTTPCACHE_IGNORE_HTTP_CODES = []
 #HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
 
+MYSQL_HOST = '172.16.7.1'
+MYSQL_DBNAME = 'spider'
+MYSQL_USER = 'root'
+MYSQL_PASSWD = 'Alvin_M1ao'
+MYSQL_PORT = 3306
+MYSQL_TABLE = 'zhihuuser'
+
 MONGO_URI = 'localhost'
 MONGO_DATABASE = 'zhihu'
 
 SCHEDULER = "scrapy_redis.scheduler.Scheduler"
 DUPEFILTER_CLASS = "scrapy_redis.dupefilter.RFPDupeFilter"
+SCHEDULER_PERSIST = True
 
 REDIS_URL = 'redis://172.16.7.1:6379'
+
+PROXY_POOL_URL = 'http://172.16.7.1:5555/random'

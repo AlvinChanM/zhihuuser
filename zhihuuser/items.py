@@ -11,7 +11,7 @@ from scrapy import Item, Field
 class UserItem(Item):
     # define the fields for your item here like:
     # name = scrapy.Field()
-    id = Field()
+    uid = Field()
     name = Field()
     url_token = Field()
     follower_count = Field()
