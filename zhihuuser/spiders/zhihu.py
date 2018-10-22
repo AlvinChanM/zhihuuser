@@ -8,19 +8,10 @@ from zhihuuser.items import UserItem
 
 
 class ZhihuSpider(Spider):
-    custom_settings = {
-        "COOKIES_ENABLED": False,
-        "DOWNLOAD_DELAY": 0.4,
-
-        # 需要登录后的cookie验证
-        'DEFAULT_REQUEST_HEADERS': {
-            'Cookie': '_xsrf=graj0i331sGh36vXQou2YDYkkcAevSNS; __utmz=155987696.1539658841.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none); _zap=e97ed595-cd66-43d3-ab3e-d191ba7c6464; d_c0="AOAnh6zJXg6PTkgzTq6h6Sa_iHQEC6zuUUU=|1539659269"; q_c1=44e5b8fc6f3f43168f39d13a05d4c793|1539659287000|1539659287000; __gads=ID=e72bc63dbcec9064:T=1539659292:S=ALNI_MZ7-iZN5q0pNJtX9oHv-BYxYcnOhw; __utma=155987696.89352572.1539658841.1539679811.1539866818.3; __utmc=155987696; anc_cap_id=86f6a849707b4e1b9d752663cb44b6d7; tgw_l7_route=bc9380c810e0cf40598c1a7b1459f027; capsion_ticket="2|1:0|10:1539992467|14:capsion_ticket|44:ZThkMDYwMjVlMGRmNGQyNjgzMmIyNzRjMjgwOTc3MzY=|2ec4df31b06df17f8b6f0583c8b8d8f98ad2dfe1bc451338dcb4c4d4461c60d2"; z_c0="2|1:0|10:1539992479|4:z_c0|92:Mi4xVi1pTEF3QUFBQUFBNENlSHJNbGVEaVlBQUFCZ0FsVk5uN20zWEFBbkpFSHVZV3U3TS12V1ZiYnRBeU9mQVRLVEtn|522fda2098edd5db2a2ec5e68386982dadd6d2739f73c6b0e17662f97830b23f"',
-            'Host': 'www.zhihu.com',
-            'Referer': 'https://www.zhihu.com',
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) '
-                          'Chrome/64.0.3282.140 Safari/537.36',
-        }
-    }
+    # custom_settings = {
+    #     "COOKIES_ENABLED": False,
+    #     "DOWNLOAD_DELAY": 0.4,
+    # }
     name = 'zhihu'
     allowed_domains = ['www.zhihu.com']
     start_urls = ['http://www.zhihu.com/']
@@ -40,13 +31,13 @@ class ZhihuSpider(Spider):
 
     def start_spiders(self):
         # 初始人的个人详情
-        yield Request(self.user_url.format(user=self.start_user, include=self.user_query), callback=self.parse_user)
+        yield Request(self.user_url.format(user=self.start_user, include=self.user_query), callback=self.parse_user,dont_filter=True)
 
         # 初始人的关注列表
-        yield Request(self.followees_url.format(user = self.start_user, include=self.followees_query, offset=0, limit=20), callback=self.parse_followees)
+        yield Request(self.followees_url.format(user = self.start_user, include=self.followees_query, offset=0, limit=20), callback=self.parse_followees, dont_filter=True)
 
         # 初始人的粉丝列表
-        yield Request(self.followers_url.format(user=self.start_user, include = self.follower_query, offset=0, limit=20), callback=self.parse_followers)
+        yield Request(self.followers_url.format(user=self.start_user, include = self.follower_query, offset=0, limit=20), callback=self.parse_followers, dont_filter=True)
 
     def parse_user(self, response):
         # 解析个人详情
@@ -94,7 +85,7 @@ class ZhihuSpider(Spider):
 
 
     def start_requests(self):
-        return [Request(url='https://www.zhihu.com/', callback=self.check_login)]
+        return [Request(url='https://www.zhihu.com/', callback=self.check_login, dont_filter=True)]
 
     def check_login(self, response):
         # 验证是否登录成功

@@ -1,0 +1,14 @@
+*.pyc
+*.pyo
+*.out
+*.rdb
+*.swp
+*.idea
+*.sqlite3
+*.DS_Store
+.project
+*.log.*
+*.log
+*/migrations/00*.py
+
+
